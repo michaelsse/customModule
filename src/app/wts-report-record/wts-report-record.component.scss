@@ -1,0 +1,51 @@
+.wtsReportRecord {
+	display: flex;
+	.mdc-button {
+		font-size: 1rem;
+		height: 32px;
+		line-height: 32px;
+		border-radius: .3125rem;
+		border: 1px solid var(--sys-primary);
+		padding-left: 1rem;
+		padding-right: 1rem;
+		margin-top: .25rem;
+		font-family: var(--mdc-outlined-button-label-text-font,var(--mat-sys-label-large-font));
+		.mdc-button__label {
+			font: var(--sys-body-medium);
+			letter-spacing: var(--sys-body-medium-tracking);
+			color: var(--mdc-text-button-label-text-color, var(--mat-sys-primary));
+		}
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.04);
+			&::after {
+				opacity: 1;
+				visibility: visible;
+			}
+		}
+		&::after {
+			content: attr(data-tooltip);
+			position: absolute;
+			top: 140%;
+			left: 50%;
+			transform: translateX(-50%) translateY(-8px);
+			background-color: var(--sys-inverse-surface);
+			color: white;
+			padding: 6px 12px;
+			border-radius: 4px;
+			font-size: 12px;
+			white-space: nowrap;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 0.2s, visibility 0.2s;
+			pointer-events: none;
+			z-index: 1001;
+		}
+		.mat-icon.icon-align-middle {
+			line-height: 24px;
+			margin-left: .2em;
+			svg path {
+				fill: var(--sys-outline);
+			}
+		}
+	}
+}

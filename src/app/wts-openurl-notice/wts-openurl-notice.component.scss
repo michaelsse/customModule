@@ -1,0 +1,21 @@
+.wts-openurl-notice-wrapper {
+	background-color: #fff3cd;
+    border: 1px solid var(--border);
+    border-radius: .5rem;
+    color: #856404;
+	margin: 0 auto;
+    padding: 1rem;
+    width: 100%;
+}
+
+@media (min-width: 960px) and (max-width: 1279.98px) {
+	.wts-openurl-notice-wrapper {
+		width: clamp(912px, 85%, 1088px);
+	}
+}
+
+@media (min-width: 1280px) {
+	.wts-openurl-notice-wrapper {
+		width: clamp(1088px, 85%, 1368px);
+	}
+}

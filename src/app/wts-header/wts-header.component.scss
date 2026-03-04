@@ -1,0 +1,15 @@
+#main-site-header {
+	background-color: var(--sys-secondary);
+	height: 6.75rem;
+	border-bottom: 1px outset var(--sys-CL-header-border);
+	padding: 5px 0;
+	#wts-menu {
+		.navbar {
+			padding: 0 4rem;
+			margin-top: 1rem;
+			#wts-logo {
+			width: 160px;
+			}
+		}
+	}
+}

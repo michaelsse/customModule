@@ -1,0 +1,16 @@
+	#payViaSquare {
+		> p {
+			margin-top: 1rem;
+			> a {
+				&.mdc-button {
+					svg {
+						height: 1rem;
+						margin-left: .25em;
+						path {
+							fill: var(--sys-primary);
+						}
+					}
+				}
+			}
+		}
+	}

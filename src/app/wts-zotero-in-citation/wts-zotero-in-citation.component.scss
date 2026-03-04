@@ -1,0 +1,19 @@
+.wtsZoteroInCitation {
+	margin: 1rem;
+	a {
+		&.mdc-button {
+			display:flex;
+			height:auto;
+			img {
+				vertical-align:middle;
+				margin: .25rem;
+			}
+			svg {
+				vertical-align:middle;
+				path {
+					fill: var(--sys-outline);
+				}
+			}
+		}
+	}
+}

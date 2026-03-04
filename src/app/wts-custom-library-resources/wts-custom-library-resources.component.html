@@ -1,0 +1,31 @@
+<div class="resources-menu-wrapper mat-mdc-form-field">
+	<div class="resources-select-container"
+		(click)="toggleMenu($event)"
+		[attr.data-tooltip]="'nui.customization.libraryResources.tooltip' | translate">
+		<div class="resources-trigger display-flex">
+			<svg class="mat-icon notranslate nde-mat-icon-size grey-icon-color" 
+				width="100%" height="100%" viewBox="0 0 24 24" fill="currentColor">
+				<path d="m 11.997758,0.04221315 c -6.6171875,0 -12.00000051,5.38281305 -12.00000051,12.00000085 0,6.617188 5.38281301,12 12.00000051,12 6.617188,0 12,-5.382812 12,-12 0,-6.6171878 -5.382812,-12.00000085 -12,-12.00000085 z m -1.03125,2.06250005 c 0.01172,0 0.01953,0 0.03125,0 v 0.9375 h 2 v -0.9375 c 4.738281,0.464844 8.472656,4.199219 8.9375,8.9375008 h -0.9375 v 2 h 0.9375 c -0.464844,4.738281 -4.199219,8.472656 -8.9375,8.9375 v -0.9375 h -2 v 0.9375 C 6.2594765,21.51487 2.5251015,17.780495 2.0602575,13.042214 h 0.9375 v -2 h -0.9375 C 2.5251015,6.3117442 6.2438515,2.5812762 10.966508,2.1047132 Z m 7.53125,3.4375 -8.34375,4.6562508 -4.6562505,8.34375 8.3437505,-4.65625 z m -6.5,5.0000008 c 0.828125,0 1.5,0.671875 1.5,1.5 0,0.828125 -0.671875,1.5 -1.5,1.5 -0.828125,0 -1.5,-0.671875 -1.5,-1.5 0,-0.828125 0.671875,-1.5 1.5,-1.5 z" />
+			</svg>
+			<h3 class="visually-hidden trigger-text">{{ 'nui.customization.libraryResources.title' | translate }}</h3>
+		</div>
+	</div>
+
+	<div class="resources-dropdown user-area-resources-list" 
+		[class.show]="isOpen"
+		role="listbox">
+		<a *ngFor="let resource of resources"
+			class="resource-option mat-mdc-option"
+			[href]="resource.url"
+			target="_blank"
+			rel="noopener noreferrer"
+			role="option"
+			(click)="closeMenu()">
+			<svg class="mat-icon notranslate nde-mat-icon-size" 
+				width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+				<path [attr.d]="getIconPath(resource.icon)"/>
+			</svg>
+			<span>{{ resource.translationKey | translate }}</span>
+		</a>
+	</div>
+</div>
