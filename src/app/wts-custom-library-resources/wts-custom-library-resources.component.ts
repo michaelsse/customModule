@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from "@ngx-translate/core";
 
@@ -19,6 +19,7 @@ interface ResourceLink {
 
 export class WtsCustomLibraryResourcesComponent implements OnInit, OnDestroy {
 	isOpen = false;
+	constructor(private el: ElementRef) {}
 	
 	@HostListener('document:click', ['$event'])
 	onDocumentClick(event: MouseEvent): void {
@@ -26,6 +27,64 @@ export class WtsCustomLibraryResourcesComponent implements OnInit, OnDestroy {
 		// Close menu if click is outside the component
 		if (!target.closest('custom-wts-custom-library-resources')) {
 			this.isOpen = false;
+		}
+	}
+	
+	@HostListener("keydown", ["$event"])
+	onKeydown(event: KeyboardEvent): void {
+		if (!this.isOpen && event.key === "Enter" || event.key === " ") {
+			// Handled natively by the button — no action needed
+			return;
+		}
+
+		if (!this.isOpen) return;
+
+		const items = Array.from(
+			(this.el.nativeElement as Element).querySelectorAll('[role="menuitem"]')
+		) as HTMLElement[];
+		const focused = document.activeElement as HTMLElement;
+		const index = items.indexOf(focused);
+
+		switch (event.key) {
+			case "Escape":
+				this.isOpen = false;
+				// Return focus to trigger button
+				this.el.nativeElement.querySelector("button")?.focus();
+				event.preventDefault();
+				break;
+
+			case "ArrowDown":
+				event.preventDefault();
+				if (index === -1 || index === items.length - 1) {
+					items[0]?.focus();
+				} else {
+					items[index + 1]?.focus();
+				}
+				break;
+
+			case "ArrowUp":
+				event.preventDefault();
+				if (index <= 0) {
+					items[items.length - 1]?.focus();
+				} else {
+					items[index - 1]?.focus();
+				}
+				break;
+
+			case "Home":
+				event.preventDefault();
+				items[0]?.focus();
+				break;
+
+			case "End":
+				event.preventDefault();
+				items[items.length - 1]?.focus();
+				break;
+
+			case "Tab":
+				// Close menu when tabbing away
+				this.isOpen = false;
+				break;
 		}
 	}
 
@@ -89,8 +148,16 @@ export class WtsCustomLibraryResourcesComponent implements OnInit, OnDestroy {
 	];
 	
 	toggleMenu(event: MouseEvent): void {
-		event.stopPropagation(); // Prevent the document click handler from firing
+		event.stopPropagation();
 		this.isOpen = !this.isOpen;
+		
+		if (this.isOpen) {
+			// Wait for Angular to render the menu items before focusing
+			setTimeout(() => {
+				const first = (this.el.nativeElement as Element).querySelector('[role="menuitem"]') as HTMLElement | null;
+first?.focus();
+			});
+		}
 	}
 	
 	closeMenu(): void {

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, HostListener } from "@angular/core";
+import { Component, OnInit, OnDestroy, HostListener, ElementRef } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { TranslateModule } from "@ngx-translate/core";
 
@@ -27,13 +27,71 @@ export class ExternalSearchComponent implements OnInit, OnDestroy {
 	hasQuery = false;
 	isBrowseSearch = false; // Track if this is a browse search
 	externalLinks: ExternalLink[] = [];
-	constructor() {}
+	constructor(private el: ElementRef) {}
 
 	@HostListener("document:click", ["$event"])
 	onDocumentClick(event: MouseEvent): void {
 		const target = event.target as HTMLElement;
 		if (!target.closest("custom-external-search")) {
 			this.isOpen = false;
+		}
+	}
+	
+	@HostListener("keydown", ["$event"])
+	onKeydown(event: KeyboardEvent): void {
+		if (!this.isOpen && event.key === "Enter" || event.key === " ") {
+			// Handled natively by the button — no action needed
+			return;
+		}
+
+		if (!this.isOpen) return;
+
+		const items = Array.from(
+			(this.el.nativeElement as Element).querySelectorAll('[role="menuitem"]')
+		) as HTMLElement[];
+		const focused = document.activeElement as HTMLElement;
+		const index = items.indexOf(focused);
+
+		switch (event.key) {
+			case "Escape":
+				this.isOpen = false;
+				// Return focus to trigger button
+				this.el.nativeElement.querySelector("button")?.focus();
+				event.preventDefault();
+				break;
+
+			case "ArrowDown":
+				event.preventDefault();
+				if (index === -1 || index === items.length - 1) {
+					items[0]?.focus();
+				} else {
+					items[index + 1]?.focus();
+				}
+				break;
+
+			case "ArrowUp":
+				event.preventDefault();
+				if (index <= 0) {
+					items[items.length - 1]?.focus();
+				} else {
+					items[index - 1]?.focus();
+				}
+				break;
+
+			case "Home":
+				event.preventDefault();
+				items[0]?.focus();
+				break;
+
+			case "End":
+				event.preventDefault();
+				items[items.length - 1]?.focus();
+				break;
+
+			case "Tab":
+				// Close menu when tabbing away
+				this.isOpen = false;
+				break;
 		}
 	}
 
@@ -131,6 +189,15 @@ export class ExternalSearchComponent implements OnInit, OnDestroy {
 	toggleMenu(event: MouseEvent): void {
 		event.stopPropagation();
 		this.isOpen = !this.isOpen;
+		
+		if (this.isOpen) {
+			// Wait for Angular to render the menu items before focusing
+			setTimeout(() => {
+				const first = (this.el.nativeElement as Element).querySelector('[role="menuitem"]') as HTMLElement | null;
+first?.focus();
+				first?.focus();
+			});
+		}
 	}
 
 	closeMenu(): void {

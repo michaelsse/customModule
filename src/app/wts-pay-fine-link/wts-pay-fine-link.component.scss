@@ -3,6 +3,10 @@
 			margin-top: 1rem;
 			> a {
 				&.mdc-button {
+					&:focus {
+						background-color: rgba(0, 0, 0, 0.04);
+						outline: 2px solid var(--sys-on-background);
+					}
 					svg {
 						height: 1rem;
 						margin-left: .25em;

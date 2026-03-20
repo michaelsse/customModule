@@ -9,13 +9,11 @@
 	border-radius: 50%;
 	transition: background-color 0.2s;
 	position: relative;
-	&:hover {
-		background-color: rgba(0, 0, 0, 0.04);
-		&::after {
-			opacity: 1;
-			visibility: visible;
-		}
-	}
+}
+
+.mdc-button {
+	min-width: inherit;
+	padding: 0;
 	&::after {
 		content: attr(data-tooltip);
 		position: absolute;
@@ -34,18 +32,34 @@
 		pointer-events: none;
 		z-index: 1001;
 	}
-	.resources-trigger {
-		display: flex;
-		align-items: center;
-		gap: 8px;
-		svg {
-			&.grey-icon-color {
-				color: var(--sys-secondary);
-				path {
-					fill: var(--sys-secondary);
-				}
-			}
+	&:focus {
+		outline: 2px solid var(--sys-on-background);
+		border-radius: 50%;
+		background-color: rgba(0, 0, 0, 0.04);
+		outline-offset: calc((var(--mdc-icon-button-state-layer-size, 40px) - var(--mdc-icon-button-icon-size, 24px)) / 2);
+	}
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.04);
+		&::after {
+			opacity: 1;
+			visibility: visible;
 		}
+	}
+}
+.mat-mdc-icon-button {
+	height: inherit;
+	width: inherit;
+	&:hover .mat-mdc-button-persistent-ripple::before {
+		opacity: var(--mat-icon-button-hover-state-layer-opacity, var(--mat-sys-hover-state-layer-opacity));
+	}
+}
+
+.resources-trigger {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	svg path {
+		fill: var(--sys-secondary);
 	}
 }
 
@@ -64,39 +78,42 @@
 	opacity: 0;
 	visibility: hidden;
 	transform: translateY(-10px);
-	transition: all 0.2s ease;
+	transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
 	z-index: 1000;
 	overflow: hidden;
+
 	&.show {
 		opacity: 1;
 		visibility: visible;
 		transform: translateY(0);
 	}
-	.resource-option {
-		display: flex;
-		align-items: center;
-		gap: 12px;
-		padding: 12px 16px;
-		text-decoration: none;
-		color: #333;
-		transition: background-color 0.2s;
-		cursor: pointer;
-		min-height: 48px;
-		&:nth-child(5) {
-			border-top: 1px groove var(--sys-outline);
-		}
-		&:focus {
-			outline: 2px solid #0078d4;
-			outline-offset: -2px;
-			}
-		svg {
-			flex-shrink: 0;
-			path {
-				fill: var(--sys-outline);
-			}
-		}
-		span {
-			font-size: 14px;
-		}
+}
+
+.resource-option {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding: 12px 16px;
+	text-decoration: none;
+	color: #333;
+	transition: background-color 0.2s;
+	cursor: pointer;
+	min-height: 48px;
+
+	&:nth-child(5) {
+		border-top: 1px groove var(--sys-outline);
+	}
+
+	&:focus {
+		outline: 2px solid #0078d4;
+		outline-offset: -2px;
+	}
+
+	svg path {
+		fill: var(--sys-outline);
+	}
+
+	span {
+		font-size: 14px;
 	}
 }

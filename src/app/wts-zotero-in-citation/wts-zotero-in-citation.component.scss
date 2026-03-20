@@ -4,6 +4,10 @@
 		&.mdc-button {
 			display:flex;
 			height:auto;
+			&:focus {
+				background-color: rgba(0, 0, 0, 0.04);
+				outline: 2px solid var(--sys-on-background);
+			}
 			img {
 				vertical-align:middle;
 				margin: .25rem;

@@ -3,6 +3,10 @@
 	display: flex;
 	flex-direction: row-reverse;
 	.mdc-button {
+		&:focus {
+			background-color: rgba(0, 0, 0, 0.04);
+			outline: 2px solid var(--sys-on-background);
+		}
 		.mat-icon.icon-align-middle {
 			height: 1.1em;
 			margin-left: .25em;
