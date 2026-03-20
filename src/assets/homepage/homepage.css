@@ -32,18 +32,24 @@
 					justify-content: center;
 				}
 			}
+			a.mdc-button {
+				margin-bottom: 1em;
+				&:focus {
+					background-color: rgba(0, 0, 0, 0.04);
+					outline: 2px solid var(--sys-on-background);
+				}
+			}
 		}
 	}
 
     /* Link styling */
     a[data-modal] {
-      color: #0066cc;
-      text-decoration: underline;
-      cursor: pointer;
-    }
-
-    a[data-modal]:hover {
-      color: #004499;
+		color: #0066cc;
+		text-decoration: underline;
+		cursor: pointer;
+		&:hover {
+			color: #004499;
+		}
     }
 
     /* Hide modal containers by default */

@@ -12,44 +12,39 @@
 <body>
     <main class="main-landing-page display-flex flex-column flex-layout-center-center">
         <div class="main-landing-page-contacts" flex="auto">
-            <div class="alma_hours_widget" data-title="Today's Hours" data-library="COOK" data-date-format="l, M d, Y" data-time-format="g:ia" data-start-date="-1 day" data-end-date="-1 day"></div>
+            <div class="alma_hours_widget" data-title="Today's Hours" data-library="COOK" data-date-format="l, M d, Y" data-time-format="g:ia" data-start-date="-1 day" data-end-date="-1 day" aria-live="polite"><p>Loading hours from server…</p></div>
 			<div class="main-landing-page-contacts-buttons">
-                <ul style="list-style-type:none;">
-                    <li>
-                        <p>
-                            <span>Contact email: </span>
-                            <a href="mailto:library@westernsem.edu" class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-unthemed mat-mdc-button-base " mat-ripple-loader-class-name="mat-mdc-button-ripple" aria-selected="false">
-                                <span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
-                                <span class="mat-focus-indicator"></span>
-                                <span class="mat-mdc-button-touch-target"></span>
-                                <span class="mdc-button__label">library@westernsem.edu</span>
-                                <mat-icon role="img" class="mat-icon notranslate nde-mat-icon-size mat-icon-no-color ng-star-inserted" aria-hidden="true" data-mat-icon-type="svg" data-mat-icon-name="E-mail">
-                                    <svg height="100%" viewBox="0 -960 960 960" width="100%" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
-										<path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z"/>
-									</svg>
-                                </mat-icon>
-                                <span class="mat-ripple mat-mdc-button-ripple"></span>
-                            </a>
-                        </p>
-                    </li>
-                    <li>
-                        <p>
-                            <span>Contact phone: </span>
-                            <a href="tel:616-346-0865" class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-unthemed mat-mdc-button-base " mat-ripple-loader-class-name="mat-mdc-button-ripple" aria-selected="false">
-                                <span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
-                                <span class="mat-focus-indicator"></span>
-                                <span class="mat-mdc-button-touch-target"></span>
-                                <span class="mdc-button__label">616-346-0865</span>
-                                <mat-icon role="img" class="mat-icon notranslate nde-mat-icon-size mat-icon-no-color ng-star-inserted" aria-hidden="true" data-mat-icon-type="svg" data-mat-icon-name="PhoneCall">
-                                    <svg height="100%" viewBox="0 0 16 16" width="100%" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
-										<path d="M14.625 15.5C12.8889 15.5 11.1736 15.1215 9.47917 14.3646C7.78472 13.6076 6.24306 12.5347 4.85417 11.1458C3.46528 9.75694 2.39236 8.21528 1.63542 6.52083C0.878472 4.82639 0.5 3.11111 0.5 1.375C0.5 1.125 0.583333 0.916667 0.75 0.75C0.916667 0.583333 1.125 0.5 1.375 0.5H4.75C4.94444 0.5 5.11806 0.565972 5.27083 0.697917C5.42361 0.829861 5.51389 0.986111 5.54167 1.16667L6.08333 4.08333C6.11111 4.30556 6.10417 4.49306 6.0625 4.64583C6.02083 4.79861 5.94444 4.93056 5.83333 5.04167L3.8125 7.08333C4.09028 7.59722 4.42014 8.09375 4.80208 8.57292C5.18403 9.05208 5.60417 9.51389 6.0625 9.95833C6.49306 10.3889 6.94444 10.7882 7.41667 11.1562C7.88889 11.5243 8.38889 11.8611 8.91667 12.1667L10.875 10.2083C11 10.0833 11.1632 9.98958 11.3646 9.92708C11.566 9.86458 11.7639 9.84722 11.9583 9.875L14.8333 10.4583C15.0278 10.5139 15.1875 10.6146 15.3125 10.7604C15.4375 10.9062 15.5 11.0694 15.5 11.25V14.625C15.5 14.875 15.4167 15.0833 15.25 15.25C15.0833 15.4167 14.875 15.5 14.625 15.5ZM3.02083 5.5L4.39583 4.125L4.04167 2.16667H2.1875C2.25694 2.73611 2.35417 3.29861 2.47917 3.85417C2.60417 4.40972 2.78472 4.95833 3.02083 5.5ZM10.4792 12.9583C11.0208 13.1944 11.5729 13.3819 12.1354 13.5208C12.6979 13.6597 13.2639 13.75 13.8333 13.7917V11.9583L11.875 11.5625L10.4792 12.9583Z"/>
-									</svg>
-                                </mat-icon>
-                                <span class="mat-ripple mat-mdc-button-ripple"></span>
-                            </a>
-                        </p>
-                    </li>
-                </ul>
+                <nav aria-label="Contact the library">
+                    <div>
+						<a href="https://westernsem.libwizard.com/f/contact" target="_blank" class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-unthemed mat-mdc-button-base " mat-ripple-loader-class-name="mat-mdc-button-ripple" aria-label="Email us" id="contact-email-link">
+							<span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
+							<span class="mat-focus-indicator"></span>
+							<span class="mat-mdc-button-touch-target"></span>
+							<span class="mdc-button__label">Contact Us</span>
+							<mat-icon role="img" class="mat-icon notranslate nde-mat-icon-size mat-icon-no-color ng-star-inserted" aria-hidden="true" data-mat-icon-type="svg" data-mat-icon-name="E-mail">
+								<svg height="100%" viewBox="0 -960 960 960" width="100%" fit="" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+									<path d="M160-160q-33 0-56.5-23.5T80-240v-480q0-33 23.5-56.5T160-800h640q33 0 56.5 23.5T880-720v480q0 33-23.5 56.5T800-160H160Zm320-280L160-640v400h640v-400L480-440Zm0-80 320-200H160l320 200ZM160-640v-80 480-400Z"/>
+								</svg>
+							</mat-icon>
+							<span class="mat-ripple mat-mdc-button-ripple"></span>
+							<span class="sr-only">(Opens in a new tab)</span>
+						</a>
+                    </div>
+					<div>
+						<a href="tel:616-346-0865" class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-unthemed mat-mdc-button-base " mat-ripple-loader-class-name="mat-mdc-button-ripple" aria-label="phone number 616 346 0865" id="contact-phone-link">
+							<span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
+							<span class="mat-focus-indicator"></span>
+							<span class="mat-mdc-button-touch-target"></span>
+							<span class="mdc-button__label">616-346-0865</span>
+							<mat-icon role="img" class="mat-icon notranslate nde-mat-icon-size mat-icon-no-color ng-star-inserted" aria-hidden="true" data-mat-icon-type="svg" data-mat-icon-name="PhoneCall">
+								<svg height="100%" viewBox="0 0 16 16" width="100%" fit="" preserveAspectRatio="xMidYMid meet" aria-hidden="true" focusable="false">
+									<path d="M14.625 15.5C12.8889 15.5 11.1736 15.1215 9.47917 14.3646C7.78472 13.6076 6.24306 12.5347 4.85417 11.1458C3.46528 9.75694 2.39236 8.21528 1.63542 6.52083C0.878472 4.82639 0.5 3.11111 0.5 1.375C0.5 1.125 0.583333 0.916667 0.75 0.75C0.916667 0.583333 1.125 0.5 1.375 0.5H4.75C4.94444 0.5 5.11806 0.565972 5.27083 0.697917C5.42361 0.829861 5.51389 0.986111 5.54167 1.16667L6.08333 4.08333C6.11111 4.30556 6.10417 4.49306 6.0625 4.64583C6.02083 4.79861 5.94444 4.93056 5.83333 5.04167L3.8125 7.08333C4.09028 7.59722 4.42014 8.09375 4.80208 8.57292C5.18403 9.05208 5.60417 9.51389 6.0625 9.95833C6.49306 10.3889 6.94444 10.7882 7.41667 11.1562C7.88889 11.5243 8.38889 11.8611 8.91667 12.1667L10.875 10.2083C11 10.0833 11.1632 9.98958 11.3646 9.92708C11.566 9.86458 11.7639 9.84722 11.9583 9.875L14.8333 10.4583C15.0278 10.5139 15.1875 10.6146 15.3125 10.7604C15.4375 10.9062 15.5 11.0694 15.5 11.25V14.625C15.5 14.875 15.4167 15.0833 15.25 15.25C15.0833 15.4167 14.875 15.5 14.625 15.5ZM3.02083 5.5L4.39583 4.125L4.04167 2.16667H2.1875C2.25694 2.73611 2.35417 3.29861 2.47917 3.85417C2.60417 4.40972 2.78472 4.95833 3.02083 5.5ZM10.4792 12.9583C11.0208 13.1944 11.5729 13.3819 12.1354 13.5208C12.6979 13.6597 13.2639 13.75 13.8333 13.7917V11.9583L11.875 11.5625L10.4792 12.9583Z"/>
+								</svg>
+							</mat-icon>
+							<span class="mat-ripple mat-mdc-button-ripple"></span>
+						</a>
+                    </div>
+                </nav>
             </div>
         </div>
     </main>

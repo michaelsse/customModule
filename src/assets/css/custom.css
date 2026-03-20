@@ -396,8 +396,9 @@ html {
 							}
 						}
 						& nde-record-image .record-thumbnail {
-							outline: none!important;
+							border-radius: .25em;
 							filter: drop-shadow(2px 2px 4px var(--sys-CL-drop-shadow));
+							outline: none!important;
 						}
 						/*Make record title bigger and bolder*/
 						& nde-record-title {
