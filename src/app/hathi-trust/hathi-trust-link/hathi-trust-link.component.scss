@@ -1,0 +1,26 @@
+.quicklink-button {
+	border-radius: 0.3125rem;
+	border: 1px solid var(--sys-primary);
+	padding-left: 1rem;
+	padding-right: 1rem;
+	margin-top: 0.25rem;
+	height: 32px;
+	line-height: 32px;
+}
+.mat-icon {
+	&.icon-align-middle {
+		line-height: 24px;
+		margin-left: .2em;
+		vertical-align: middle;
+		svg path {
+			fill: var(--sys-outline);
+		}
+	}
+	&.hathitrust {
+		line-height: 24px;
+		vertical-align: middle;
+		svg g path {
+			fill: inherit;
+		}
+	}
+}
