@@ -1,11 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from "@ngx-translate/core";
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 @Component({
   selector: 'custom-wts-report-record',
   standalone: true,
-  imports: [CommonModule,TranslateModule],
+  imports: [CommonModule, TranslateModule, MatButtonModule, MatIconModule, MatTooltipModule],
   templateUrl: './wts-report-record.component.html',
   styleUrl: './wts-report-record.component.scss'
 })
@@ -16,8 +19,6 @@ export class WtsReportRecordComponent implements OnInit {
   recordErrorLink = '';
 
   ngOnInit() {
-	// console.log('WtsReportRecordComponent ngOnInit:' + this.hostComponent); // Debug: Log component and inspect the hostComponent input for troubleshooting or checking
-    
 	const baseUrl = 'https://westernsem.libwizard.com/f/problem?'
 
     const pnx = this.hostComponent?.searchResult?.pnx;
@@ -31,6 +32,5 @@ export class WtsReportRecordComponent implements OnInit {
 	else {
 		this.recordErrorLink = baseUrl + '3111712=' + pnx?.control?.recordid[0] + '&3110243=' + titleSpaced;
 	}
-	//console.log(this.recordErrorLink);
   }
 }

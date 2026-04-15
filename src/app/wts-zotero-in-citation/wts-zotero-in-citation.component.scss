@@ -12,11 +12,8 @@
 				vertical-align:middle;
 				margin: .25rem;
 			}
-			svg {
-				vertical-align:middle;
-				path {
-					fill: var(--sys-outline);
-				}
+			svg path {
+				fill: var(--sys-outline);
 			}
 		}
 	}

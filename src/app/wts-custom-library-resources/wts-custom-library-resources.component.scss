@@ -14,24 +14,6 @@
 .mdc-button {
 	min-width: inherit;
 	padding: 0;
-	&::after {
-		content: attr(data-tooltip);
-		position: absolute;
-		top: 140%;
-		left: 50%;
-		transform: translateX(-50%) translateY(-8px);
-		background-color: var(--sys-inverse-surface);
-		color: white;
-		padding: 6px 12px;
-		border-radius: 4px;
-		font-size: 12px;
-		white-space: nowrap;
-		opacity: 0;
-		visibility: hidden;
-		transition: opacity 0.2s, visibility 0.2s;
-		pointer-events: none;
-		z-index: 1001;
-	}
 	&:focus {
 		outline: 2px solid var(--sys-on-background);
 		border-radius: 50%;

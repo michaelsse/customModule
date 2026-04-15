@@ -1,6 +1,7 @@
 import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from "@ngx-translate/core";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 interface ResourceLink {
 	label: string;
@@ -12,7 +13,7 @@ interface ResourceLink {
 @Component({
 	selector: 'custom-wts-custom-library-resources',
 	standalone: true,
-	imports: [CommonModule,TranslateModule],
+	imports: [CommonModule, TranslateModule, MatTooltipModule],
 	templateUrl: './wts-custom-library-resources.component.html',
 	styleUrl: './wts-custom-library-resources.component.scss'
 })

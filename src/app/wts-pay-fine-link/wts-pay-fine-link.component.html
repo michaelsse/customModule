@@ -1,35 +1,28 @@
 @if (hasActiveFines$ | async) {
 	<div id="payViaSquare">
-		<p>
+		<p class="wtsPayViaSquareButton">
 			<a href="https://square.link/u/sfpVdTrO"
 				target="_blank"
 				rel="noopener noreferrer"
-				class="mdc-button mdc-button--outlined mat-mdc-outlined-button mat-unthemed mat-mdc-button-base"
-				mat-ripple-loader-class-name="mat-mdc-button-ripple">
-				<span class="mat-mdc-button-persistent-ripple mdc-button__ripple"></span>
-				<span class="mat-focus-indicator"></span>
-				<span class="mat-mdc-button-touch-target"></span>
-				<span class="mdc-button__label">{{ 'fines.payfinesquare' | translate }}</span>
-				<svg class="LogoJewel svelte-1lwcids"
-					aria-hidden="true"
+				mat-stroked-button
+				[matTooltip]="'fines.payfinenote' | translate">
+				{{ 'fines.payfinesquare' | translate }}
+				<svg aria-hidden="true"
 					focusable="false"
 					xmlns="http://www.w3.org/2000/svg"
 					viewBox="0 0 994.6 995.7"
 					height="24"
 					width="24"
-					preserveAspectRatio="xMidYMid meet">
+					preserveAspectRatio="xMidYMid meet"
+					style="margin-left: 4px; vertical-align: middle;">
 					<path fill="currentColor" d="M828.4,0H166.2C74.4,0,0,74.4,0,166.2v662.2c0,91.8,74.4,166.2,166.2,166.2h662.2
 						c91.8,0,166.2-74.4,166.2-166.2V166.2C994.6,74.4,920.2,0,828.4,0z M813.8,761.3c0,29-23.5,52.5-52.5,52.5h-528
 						c-29,0-52.5-23.5-52.5-52.5v-528c0-29,23.5-52.5,52.5-52.5h528c29,0,52.5,23.5,52.5,52.5V761.3z M391.8,632.3
 						c-16.7,0-30.1-13.5-30.1-30.2V391.3c0-16.7,13.4-30.3,30.1-30.3h211.1c16.6,0,30.1,13.5,30.1,30.3V602c0,16.7-13.5,30.2-30.1,30.2
-						H391.8z" class="svelte-1lwcids"/>
+						H391.8z"/>
 				</svg>
 				<span class="sr-only">{{ 'nde.aria.opensInaNewTab' | translate }}</span>
-				<span class="mat-ripple mat-mdc-button-ripple"></span>
 			</a>
-		</p>
-		<p>
-			<span>{{ 'fines.payfinenote' | translate }}</span>
 		</p>
 	</div>
 }

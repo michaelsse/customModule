@@ -3,6 +3,8 @@ import { CommonModule } from "@angular/common";
 import { Observable, map } from "rxjs";
 import { Store, select } from "@ngrx/store";
 import { TranslateModule } from "@ngx-translate/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 // Define a type for the fine object for clarity (optional, but good practice)
 interface Fine {
@@ -13,7 +15,7 @@ interface Fine {
 @Component({
 	selector: "custom-wts-pay-fine-link",
 	standalone: true,
-	imports: [CommonModule,TranslateModule],
+	imports: [CommonModule, TranslateModule, MatButtonModule, MatTooltipModule],
 	templateUrl: "./wts-pay-fine-link.component.html",
 	styleUrl: "./wts-pay-fine-link.component.scss",
 })
@@ -45,7 +47,4 @@ export class WtsPayFineLinkComponent implements OnInit {
 
 		console.log("WtsPayFineLinkComponent Initialized (using Store).");
 	}
-
-	// The getter is no longer needed/used, as the logic is in the Observable pipe.
-	// We rely entirely on the async pipe in the template.
 }
