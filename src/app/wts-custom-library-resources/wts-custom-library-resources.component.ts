@@ -1,6 +1,9 @@
-import { Component, OnInit, OnDestroy, HostListener, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TranslateModule } from "@ngx-translate/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
 import { MatTooltipModule } from "@angular/material/tooltip";
 
 interface ResourceLink {
@@ -13,89 +16,11 @@ interface ResourceLink {
 @Component({
 	selector: 'custom-wts-custom-library-resources',
 	standalone: true,
-	imports: [CommonModule, TranslateModule, MatTooltipModule],
+	imports: [CommonModule, TranslateModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule],
 	templateUrl: './wts-custom-library-resources.component.html',
 	styleUrl: './wts-custom-library-resources.component.scss'
 })
-
-export class WtsCustomLibraryResourcesComponent implements OnInit, OnDestroy {
-	isOpen = false;
-	constructor(private el: ElementRef) {}
-	
-	@HostListener('document:click', ['$event'])
-	onDocumentClick(event: MouseEvent): void {
-		const target = event.target as HTMLElement;
-		// Close menu if click is outside the component
-		if (!target.closest('custom-wts-custom-library-resources')) {
-			this.isOpen = false;
-		}
-	}
-	
-	@HostListener("keydown", ["$event"])
-	onKeydown(event: KeyboardEvent): void {
-		if (!this.isOpen && event.key === "Enter" || event.key === " ") {
-			// Handled natively by the button — no action needed
-			return;
-		}
-
-		if (!this.isOpen) return;
-
-		const items = Array.from(
-			(this.el.nativeElement as Element).querySelectorAll('[role="menuitem"]')
-		) as HTMLElement[];
-		const focused = document.activeElement as HTMLElement;
-		const index = items.indexOf(focused);
-
-		switch (event.key) {
-			case "Escape":
-				this.isOpen = false;
-				// Return focus to trigger button
-				this.el.nativeElement.querySelector("button")?.focus();
-				event.preventDefault();
-				break;
-
-			case "ArrowDown":
-				event.preventDefault();
-				if (index === -1 || index === items.length - 1) {
-					items[0]?.focus();
-				} else {
-					items[index + 1]?.focus();
-				}
-				break;
-
-			case "ArrowUp":
-				event.preventDefault();
-				if (index <= 0) {
-					items[items.length - 1]?.focus();
-				} else {
-					items[index - 1]?.focus();
-				}
-				break;
-
-			case "Home":
-				event.preventDefault();
-				items[0]?.focus();
-				break;
-
-			case "End":
-				event.preventDefault();
-				items[items.length - 1]?.focus();
-				break;
-
-			case "Tab":
-				// Close menu when tabbing away
-				this.isOpen = false;
-				break;
-		}
-	}
-
-	ngOnInit(): void {
-		// Component initialized
-	}
-
-	ngOnDestroy(): void {
-		// Cleanup if needed
-	}
+export class WtsCustomLibraryResourcesComponent {
 
 	resources: ResourceLink[] = [
 	{
@@ -147,24 +72,7 @@ export class WtsCustomLibraryResourcesComponent implements OnInit, OnDestroy {
 		translationKey: 'nui.mainmenu.description.ResearchHelp'
 	}
 	];
-	
-	toggleMenu(event: MouseEvent): void {
-		event.stopPropagation();
-		this.isOpen = !this.isOpen;
-		
-		if (this.isOpen) {
-			// Wait for Angular to render the menu items before focusing
-			setTimeout(() => {
-				const first = (this.el.nativeElement as Element).querySelector('[role="menuitem"]') as HTMLElement | null;
-first?.focus();
-			});
-		}
-	}
-	
-	closeMenu(): void {
-		this.isOpen = false;
-	}
-	
+
 	getIconPath(iconName: string): string {
 		const icons: { [key: string]: string } = {
 			'atla': 'M21.5 15.5v-1.2h-1.9a1 1 0 0 0-.2.7c0 .2 0 .4.2.6.1.2.4.3.6.3.5 0 .8 0 1.3-.4zm2.5 1.3h-2.5v-.7l-2 .8H19l-.8-.4c-.2-.4-.4-.8-.4-1.2 0-.3.1-.5.3-.8.2-.3.4-.5.8-.7h2.5v-.6c0-.9-.4-1.3-1.3-1.3l-1.4.4-1-.4 3-1c.6 0 1.2.1 1.6.4.4.4.6.9.6 1.5v3.3l1 .3v.4m-7.6 0H13v-.4l1-.3V8.7l-1-.4V8l2-.7h.4v8.9l1 .3v.4m-6.9.1c-.4 0-.8-.2-1-.4-.3-.4-.4-.9-.4-1.5v-4.2H6.9v-.5L9 9.4h.5v.9h2v.5h-2v4.3c0 .5.3.8.9.8.1 0 .6 0 1-.3l.4.5-2.3.8m-5.8-1.4v-1.2H1.8l-.2.3v.4c0 .2 0 .4.2.6.1.2.4.3.6.3.5 0 .8 0 1.3-.4zm2.5 1.3H3.7v-.7l-2 .8h-.4l-.8-.4c-.2-.4-.4-.8-.4-1.2 0-.3.1-.5.3-.8.2-.3.4-.5.8-.7h2.5v-.6c0-.9-.4-1.3-1.3-1.3l-1.4.4-1-.4 3-1c.6 0 1.2.1 1.6.4.4.4.6.9.6 1.5v3.3l1 .3v.4',

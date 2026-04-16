@@ -1,6 +1,10 @@
-import { Component, OnInit, OnDestroy, HostListener, ElementRef } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { TranslateModule } from "@ngx-translate/core";
+import { MatButtonModule } from "@angular/material/button";
+import { MatIconModule } from "@angular/material/icon";
+import { MatMenuModule } from "@angular/material/menu";
+import { MatTooltipModule } from "@angular/material/tooltip";
 
 interface ExternalLink {
 	label: string;
@@ -18,82 +22,14 @@ interface QuerySegment {
 @Component({
 	selector: "custom-external-search",
 	standalone: true,
-	imports: [CommonModule, TranslateModule],
+	imports: [CommonModule, TranslateModule, MatButtonModule, MatIconModule, MatMenuModule, MatTooltipModule],
 	templateUrl: "./external-search.component.html",
 	styleUrl: "./external-search.component.scss",
 })
-export class ExternalSearchComponent implements OnInit, OnDestroy {
-	isOpen = false;
+export class ExternalSearchComponent implements OnInit {
 	hasQuery = false;
-	isBrowseSearch = false; // Track if this is a browse search
+	isBrowseSearch = false;
 	externalLinks: ExternalLink[] = [];
-	constructor(private el: ElementRef) {}
-
-	@HostListener("document:click", ["$event"])
-	onDocumentClick(event: MouseEvent): void {
-		const target = event.target as HTMLElement;
-		if (!target.closest("custom-external-search")) {
-			this.isOpen = false;
-		}
-	}
-	
-	@HostListener("keydown", ["$event"])
-	onKeydown(event: KeyboardEvent): void {
-		if (!this.isOpen && event.key === "Enter" || event.key === " ") {
-			// Handled natively by the button — no action needed
-			return;
-		}
-
-		if (!this.isOpen) return;
-
-		const items = Array.from(
-			(this.el.nativeElement as Element).querySelectorAll('[role="menuitem"]')
-		) as HTMLElement[];
-		const focused = document.activeElement as HTMLElement;
-		const index = items.indexOf(focused);
-
-		switch (event.key) {
-			case "Escape":
-				this.isOpen = false;
-				// Return focus to trigger button
-				this.el.nativeElement.querySelector("button")?.focus();
-				event.preventDefault();
-				break;
-
-			case "ArrowDown":
-				event.preventDefault();
-				if (index === -1 || index === items.length - 1) {
-					items[0]?.focus();
-				} else {
-					items[index + 1]?.focus();
-				}
-				break;
-
-			case "ArrowUp":
-				event.preventDefault();
-				if (index <= 0) {
-					items[items.length - 1]?.focus();
-				} else {
-					items[index - 1]?.focus();
-				}
-				break;
-
-			case "Home":
-				event.preventDefault();
-				items[0]?.focus();
-				break;
-
-			case "End":
-				event.preventDefault();
-				items[items.length - 1]?.focus();
-				break;
-
-			case "Tab":
-				// Close menu when tabbing away
-				this.isOpen = false;
-				break;
-		}
-	}
 
 	ngOnInit(): void {
 		this.checkWindowLocation();
@@ -186,24 +122,6 @@ export class ExternalSearchComponent implements OnInit, OnDestroy {
 		return false;
 	}
 
-	toggleMenu(event: MouseEvent): void {
-		event.stopPropagation();
-		this.isOpen = !this.isOpen;
-		
-		if (this.isOpen) {
-			// Wait for Angular to render the menu items before focusing
-			setTimeout(() => {
-				const first = (this.el.nativeElement as Element).querySelector('[role="menuitem"]') as HTMLElement | null;
-first?.focus();
-				first?.focus();
-			});
-		}
-	}
-
-	closeMenu(): void {
-		this.isOpen = false;
-	}
-
 	private buildExternalLinks(queries: string[]): void {
 		const segments = this.parseQueries(queries);
 
@@ -262,42 +180,33 @@ first?.focus();
 			}
 		}
 		
-		return limitedSegments.length > 0 ? limitedSegments : [segments[0]]; // At least include first segment
+		return limitedSegments.length > 0 ? limitedSegments : [segments[0]];
 	}
 
 	private parseQueries(queries: string[]): QuerySegment[] {
 		const segments: QuerySegment[] = [];
 
-		// console.log("Parsing queries:", queries); // Removed console.log
-
 		queries.forEach((query) => {
 			const parts = query.split(',');
 			
-			// A segment must have at least the Field, Type, and Term (3 parts)
 			if (parts.length < 3) {
 				return; 
 			}
 
-			const field = parts[0].trim(); // e.g., 'any'
-			// parts[1] is searchType (contains, exact, etc.) - we skip this for now
+			const field = parts[0].trim();
 
-			// 1. Assume everything from the third part (index 2) onwards is the term/operator
 			let rawTermParts = parts.slice(2); 
 
-			// 2. Check if the very last part is a valid boolean operator
 			let operator = "AND";
 			const potentialOp = rawTermParts[rawTermParts.length - 1]?.trim().toUpperCase();
 			
 			if (potentialOp === "AND" || potentialOp === "OR" || potentialOp === "NOT") {
 				operator = potentialOp;
-				// Remove the operator from the term parts array
 				rawTermParts = rawTermParts.slice(0, -1); 
 			}
 
-			// 3. Join the remaining parts to form the full term (including any internal commas)
 			const rawTerm = rawTermParts.join(',');
 			
-			// 4. Decode and clean the final term
 			const term = this.safeDecodeURIComponent(rawTerm.trim());
 
 			if (term.length > 0) {
@@ -306,11 +215,9 @@ first?.focus();
 					operator: operator,
 					term: term,
 				});
-				// console.log(`Segment ${segments.length}:`, { field, operator, term }); // Removed console.log
 			}
 		});
 
-		// console.log("Final parsed segments:", segments); // Removed console.log
 		return segments;
 	}
 
@@ -323,17 +230,14 @@ first?.focus();
 		const base =
 		"https://col-hope.primo.exlibrisgroup.com/nde/search?vid=01COL_HOPE:NDE&facet=tlevel,include,available_p&tab=Everything&search_scope=MyInst_and_CI";
 		
-		// Get the original query parameter from the current URL
 		const urlParams = new URLSearchParams(window.location.search);
 		const originalQuery = urlParams.get("query");
 		const originalMode = urlParams.get("mode") || "simple";
 		
-		// If we have an original query, append it directly to the base
 		if (originalQuery) {
 			return `${base}&mode=${originalMode}&query=${originalQuery}`;
 		}
 		
-		// Fallback: if no original query exists, build from segments (existing logic)
 		const queryParams = segments
 		.map((seg) => {
 			return `query=${seg.field},contains,${this.encodeSearchTerm(seg.term)},${seg.operator}`;
@@ -350,7 +254,6 @@ first?.focus();
 		const queryParts = segments
 			.map((seg, index) => {
 				const prefix = this.mapFieldToAtla(seg.field);
-				// Use the operator from the PREVIOUS segment (except for first segment)
 				const operator = index > 0 ? `+${segments[index - 1].operator}+` : "";
 				return `${operator}${prefix}+${this.encodeSearchTerm(seg.term).replace(/%20/g, "+")}`;
 			})
@@ -362,12 +265,10 @@ first?.focus();
 	private buildWorldCatUrl(segments: QuerySegment[]): string {
 		const base = 'https://westerntheolseminary.on.worldcat.org/search?&databaseList=143,233,2013,638,283&scope=0&clusterResults=false&se=nodgr&sd=desc&qt=sort_nodgr_desc';
 		
-		// WorldCat has a 40 word limit
 		const limitedSegments = this.limitSegmentsByWordCount(segments, 40);
 		
 		const queryParts = limitedSegments.map((seg, index) => {
 			const prefix = this.mapFieldToWorldCat(seg.field);
-			// Use the operator from the PREVIOUS segment (except for first segment)
 			const operator = index > 0 ? `%20${limitedSegments[index - 1].operator}%20%20` : '';
 			return `${operator}${prefix}:${this.encodeSearchTerm(seg.term)}`;
 		}).join('');
@@ -378,7 +279,6 @@ first?.focus();
 	private buildHerrickUrl(segments: QuerySegment[]): string {
 		const base = 'https://herrickdl.bibliocommons.com/v2/search?searchType=bl&suppress=true';
 		
-		// Build the query first to check length
 		let url = base;
 		let queryParts = '';
 		
@@ -390,7 +290,6 @@ first?.focus();
 			
 			const testUrl = `${url}&query=(${queryParts}${part}+AND)`;
 			
-			// Herrick has a 900 character limit
 			if (testUrl.length > 900) {
 				console.log(`Herrick URL truncated at segment ${i} due to 900 char limit`);
 				break;
@@ -405,20 +304,15 @@ first?.focus();
 	private buildHwpepUrl(segments: QuerySegment[]): string {
 		const base = 'https://catx.hope.edu/hwpep/Search/Results';
 		
-		// HWPEP advanced search format: 
-		// join=AND&lookfor0[]=term1&type0[]=Field1&lookfor0[]=term2&type0[]=Field2&bool0[]=AND
-		
 		if (segments.length === 0) {
 			return `${base}?type=AllFields&lookfor=`;
 		}
 		
-		// For single segment, use simple format
 		if (segments.length === 1) {
 			const fieldType = this.mapFieldToHwpep(segments[0].field);
 			return `${base}?type=${fieldType}&lookfor=${this.encodeSearchTerm(segments[0].term)}`;
 		}
 		
-		// For multiple segments, use advanced format
 		let url = `${base}?join=AND`;
 		
 		segments.forEach((seg, index) => {
@@ -426,13 +320,11 @@ first?.focus();
 			url += `&lookfor${index}[]=${this.encodeSearchTerm(seg.term)}`;
 			url += `&type${index}[]=${fieldType}`;
 			
-			// Add boolean operator (except for last segment)
 			if (index < segments.length - 1) {
 				url += `&bool${index}[]=${seg.operator}`;
 			}
 		});
 		
-		// Add standard params
 		url += `&illustration=-1&daterange[]=publishDate&publishDatefrom=&publishDateto=`;
 		
 		return url;
@@ -443,7 +335,6 @@ first?.focus();
 
 		const queryTerms = segments
 			.map((seg, index) => {
-				// Use the operator from the PREVIOUS segment (except for first segment)
 				const operator = index > 0 ? ` ${segments[index - 1].operator} ` : "";
 				return `${operator}${seg.term}`;
 			})
@@ -512,7 +403,7 @@ first?.focus();
 			hwpep:
 				"M4.3 15.5V7.1l2-1c1.6-.7 2-.9 2.1-.8l-2 18.6H4.3ZM7.6 24v-.3A16209.8 16209.8 0 0 1 9.4 5v-.2l.7-.3.7-.3v2a5886.5 5886.5 0 0 0-.5 17.2v.6H7.5Zm4.2-6.9V3.6l1-.4 1-.5v.1a15874.6 15874.6 0 0 1 1.4 21v.2h-3.5ZM17 23a2489 2489 0 0 0-2-20.7L19.5 0v24h-2.5z",
 			gscholar:
-				'M18.308 13.985s0 .004.005.004c.43.91.674 1.926.674 2.999a6.994 6.994 0 1 1-13.315-2.994 6.821 6.821 0 0 1 .965-1.5 6.98 6.98 0 0 1 5.358-2.496c1.573 0 3.025.52 4.196 1.4a7.174 7.174 0 0 1 1.864 2.1c.094.159.178.327.258.491zm1.236-.881a8.493 8.493 0 0 0-15.109 0L0 9.496 11.99 0l11.99 9.496-4.436 3.612Z" style="stroke-width:1',
+				'M18.308 13.985s0 .004.005.004c.43.91.674 1.926.674 2.999a6.994 6.994 0 1 1-13.315-2.994 6.821 6.821 0 0 1 .965-1.5 6.98 6.98 0 0 1 5.358-2.496c1.573 0 3.025.52 4.196 1.4a7.174 7.174 0 0 1 1.864 2.1c.094.159.178.327.258.491zm1.236-.881a8.493 8.493 0 0 0-15.109 0L0 9.496 11.99 0l11.99 9.496-4.436 3.612Z',
 		};
 		return icons[iconName] || icons["database"];
 	}
