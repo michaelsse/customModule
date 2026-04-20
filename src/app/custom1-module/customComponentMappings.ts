@@ -1,6 +1,8 @@
 import { ExternalSearchComponent } from '../external-search/external-search.component';
 import { HathiTrustComponent } from '../hathi-trust/hathi-trust.component';
 import { WtsCustomLibraryResourcesComponent } from '../wts-custom-library-resources/wts-custom-library-resources.component';
+import { WtsNdeHeaderComponent } from '../wts-nde-header/wts-nde-header.component';
+import { WtsNdeFooterComponent } from '../wts-nde-footer/wts-nde-footer.component';
 import { WtsOpenurlNoticeComponent } from '../wts-openurl-notice/wts-openurl-notice.component';
 import { WtsPayFineLinkComponent } from '../wts-pay-fine-link/wts-pay-fine-link.component';
 import { WtsOffensiveMaterialsStatementComponent } from '../wts-offensive-materials-statement/wts-offensive-materials-statement.component';
@@ -13,6 +15,8 @@ export const selectorComponentMap = new Map<string, any>([
 	['nde-search-bar-filters-before',ExternalSearchComponent],
 	['nde-online-availability-before', HathiTrustComponent],
 	['nde-user-panel-after',WtsCustomLibraryResourcesComponent],
+	['nde-header-top', WtsNdeHeaderComponent],
+	['nde-footer-top', WtsNdeFooterComponent],
 	['nde-full-display-details-after',WtsOffensiveMaterialsStatementComponent],
 	['nde-service-page-top',WtsOpenurlNoticeComponent],
 	['nde-account-section-results-bottom',WtsPayFineLinkComponent],

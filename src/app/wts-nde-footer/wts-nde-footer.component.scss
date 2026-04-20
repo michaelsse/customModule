@@ -1,0 +1,17 @@
+.wts-footer {
+	background-color: var(--sys-CL-footer-background);
+	border-top: 1px inset var(--border);
+	margin: 0 auto;
+	div {
+		text-align: center;
+		z-index: 0;
+		padding: 0;
+		padding: 1.5rem!important;
+		display: flex!important;
+		margin: 0 auto;
+		max-width: 1320px;
+		&.text-white {
+			color: var(--sys-on-primary);
+		}
+	}
+}
