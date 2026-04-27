@@ -40,4 +40,12 @@
 		font-size: 14px;
 		color: var(--sys-on-surface-variant);
 	}
+	&:hover {
+		svg path {
+			fill: #002b5c;
+		}
+		span {
+			color: #002b5c;
+		}
+	}
 }
