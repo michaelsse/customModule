@@ -47,7 +47,9 @@ function loadAlmaWidget(widget) {
         } else {
           let hoursHtml = "";
           (day.hours || []).forEach((hours, index) => {
-            const range = `<span class="alma_hours_row_open">${hours.open}</span>-<span class="alma_hours_row_close">${hours.close}</span>`;
+            const range = `<span class="alma_hours_row_range" aria-label="${hours.open} to ${hours.close}">
+				<span aria-hidden="true" class="alma_hours_row_open">${hours.open}</span><span aria-hidden="true">&ndash;</span><span aria-hidden="true" class="alma_hours_row_close">${hours.close}</span>
+				</span>`;
             hoursHtml += (index > 0 ? ", " : "") + range;
           });
           widgetDays.push(
@@ -60,7 +62,7 @@ function loadAlmaWidget(widget) {
       });
 
       widget.innerHTML = `
-        <div class="alma_hours_widget_title"><h4>${inputTitle}</h4></div>
+        <div class="alma_hours_widget_title"><h3>${inputTitle}</h3></div>
         <ul class="alma_hours_list">${widgetDays.join("")}</ul>
       `;
       widget.style.display = "block";

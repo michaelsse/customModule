@@ -126,11 +126,13 @@ function isScriptLoaded(url) {
 	});
 	
 	// Load External Javascripts
+	const almaHoursUrl = JS_BASE_PATH + "alma_hours_widget.js";
+	const discoveryShowcaseJsUrl = JS_BASE_PATH + "discovery-showcase.bundled.js";
+	const nicheAcademyUrl = "https://cdn.nicheacademy.com/na_loader/v1.0.0";
 	const userwayUrl = "https://cdn.userway.org/widget.js";
 	const userwayAccount = "dDGBItJNUw"; // ← replace with your actual ID
-	const almaHoursUrl = JS_BASE_PATH + "alma_hours_widget.js";
-	const nicheAcademyUrl = "https://cdn.nicheacademy.com/na_loader/v1.0.0";
 
+	
 	// Load UserWay widget with data-account
 	if (!isScriptLoaded(userwayUrl)) {
 		const widgetScript = document.createElement("script");
@@ -142,6 +144,18 @@ function isScriptLoaded(url) {
 		document.body.prepend(widgetScript);
 	} else {
 		console.log("UserWay widget already loaded.");
+	}
+
+	// Load Primo Discovery Showcase Widget Script
+	if (!isScriptLoaded(discoveryShowcaseJsUrl)) {
+		const discoveryShowcaseJs = document.createElement("script");
+		discoveryShowcaseJs.src = discoveryShowcaseJsUrl;
+		discoveryShowcaseJs.type = 'module';
+		discoveryShowcaseJs.onload = () => console.log("Primo Discovery Showcase Script loaded.");
+		discoveryShowcaseJs.onerror = () => console.error("Failed to load Primo Discovery Showcase Script.");
+		document.head.appendChild(discoveryShowcaseJs);
+	} else {
+		console.log("Primo Discovery Showcase Script already loaded.");
 	}
 
 	// Load Alma Hours Widget Script
