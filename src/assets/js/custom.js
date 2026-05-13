@@ -104,7 +104,7 @@ function isScriptLoaded(url) {
 		type: "image/svg+xml",
 		href: ICON_BASE_PATH + "favicon.svg"
 	});
-	
+
 	// Add Apple Touch Icons
 	addLinkOnce({
 		rel: "apple-touch-icon",
@@ -116,7 +116,7 @@ function isScriptLoaded(url) {
 		sizes: "180x180",
 		href: ICON_BASE_PATH + "apple-icon-180x180.png"
 	});
-	
+
 	// Add Async CSS file
 	addLinkOnce({
 		rel: "preload",
@@ -124,7 +124,7 @@ function isScriptLoaded(url) {
 		as: "style",
 		onload: "this.onload=null;this.rel='stylesheet'"
 	});
-	
+
 	// Load External Javascripts
 	const almaHoursUrl = JS_BASE_PATH + "alma_hours_widget.js";
 	const discoveryShowcaseJsUrl = JS_BASE_PATH + "discovery-showcase.bundled.js";
@@ -132,7 +132,7 @@ function isScriptLoaded(url) {
 	const userwayUrl = "https://cdn.userway.org/widget.js";
 	const userwayAccount = "dDGBItJNUw"; // ← replace with your actual ID
 
-	
+
 	// Load UserWay widget with data-account
 	if (!isScriptLoaded(userwayUrl)) {
 		const widgetScript = document.createElement("script");
@@ -172,34 +172,34 @@ function isScriptLoaded(url) {
 
 	// Load Niche Academy
 	if (!window.na) {
-	  const queue = [];
-	  const na = function () {
-		na.process ? na.process.apply(na, arguments) : queue.push(arguments);
-	  };
-	  na.queue = queue;
-	  na.t = Date.now();
-	  window.na = na;
+		const queue = [];
+		const na = function() {
+			na.process ? na.process.apply(na, arguments) : queue.push(arguments);
+		};
+		na.queue = queue;
+		na.t = Date.now();
+		window.na = na;
 
-	  if (!isScriptLoaded(nicheAcademyUrl)) {
-		const naScript = document.createElement("script");
-		naScript.src = nicheAcademyUrl;
-		naScript.async = true;
-		naScript.crossOrigin = "anonymous";
-		naScript.onload = () => console.log("Niche Academy loaded.");
-		naScript.onerror = () => console.error("Failed to load Niche Academy.");
+		if (!isScriptLoaded(nicheAcademyUrl)) {
+			const naScript = document.createElement("script");
+			naScript.src = nicheAcademyUrl;
+			naScript.async = true;
+			naScript.crossOrigin = "anonymous";
+			naScript.onload = () => console.log("Niche Academy loaded.");
+			naScript.onerror = () => console.error("Failed to load Niche Academy.");
 
-		const firstScript = document.getElementsByTagName("script")[0];
-		if (firstScript?.parentNode) {
-		  firstScript.parentNode.insertBefore(naScript, firstScript);
-		} else {
-		  document.head.appendChild(naScript); // Fallback
+			const firstScript = document.getElementsByTagName("script")[0];
+			if (firstScript?.parentNode) {
+				firstScript.parentNode.insertBefore(naScript, firstScript);
+			} else {
+				document.head.appendChild(naScript); // Fallback
+			}
 		}
-	  }
 
-	  na("init", "d5f047c7591c4f6d395752f842804d10");
-	  na("event", "pageload");
+		na("init", "d5f047c7591c4f6d395752f842804d10");
+		na("event", "pageload");
 	} else {
-	  console.log("Niche Academy already loaded.");
+		console.log("Niche Academy already loaded.");
 	}
 
 	// Niche Academy widgets on Full Item pages
@@ -209,43 +209,102 @@ function isScriptLoaded(url) {
 	// Also hook Angular's router if accessible
 	// This covers programmatic navigation (router.navigate)
 	const _pushState = history.pushState;
-	history.pushState = function (...args) {
-	  _pushState.apply(history, args);
-	  reinitNicheAcademy();
+	history.pushState = function(...args) {
+		_pushState.apply(history, args);
+		reinitNicheAcademy();
 	};
 
 	const _replaceState = history.replaceState;
-	history.replaceState = function (...args) {
-	  _replaceState.apply(history, args);
-	  reinitNicheAcademy();
+	history.replaceState = function(...args) {
+		_replaceState.apply(history, args);
+		reinitNicheAcademy();
 	};
 
 	function reinitNicheAcademy() {
-	  // Give Angular time to finish rendering the new view
-	  setTimeout(() => {
-		const container = document.querySelector("#view-it-card-links");
+		// Give Angular time to finish rendering the new view
+		setTimeout(() => {
+			const container = document.querySelector("#view-it-card-links");
 
-		if (!container) {
-		  console.warn("Niche Academy: #view-it-card-links not found on this page.");
-		  return;
-		}
+			if (!container) {
+				console.warn("Niche Academy: #view-it-card-links not found on this page.");
+				return;
+			}
 
-		// Disconnect previous observer before re-observing
-		if (window._naObserver) {
-		  window._naObserver.disconnect();
-		}
+			// Disconnect previous observer before re-observing
+			if (window._naObserver) {
+				window._naObserver.disconnect();
+			}
 
-		const observer = new MutationObserver(() => {
-		  window.dispatchEvent(new Event("na-widget-reload"));
-		});
+			const observer = new MutationObserver(() => {
+				window.dispatchEvent(new Event("na-widget-reload"));
+			});
 
-		observer.observe(container, { childList: true });
-		window._naObserver = observer; // Store reference for cleanup
+			observer.observe(container, {
+				childList: true
+			});
+			window._naObserver = observer; // Store reference for cleanup
 
-		window.dispatchEvent(new Event("na-widget-reload"));
-	  }, 300); // Adjust delay if Angular needs more time to render
+			window.dispatchEvent(new Event("na-widget-reload"));
+		}, 300); // Adjust delay if Angular needs more time to render
 	}
 
 	// Run once on initial load
 	document.addEventListener("DOMContentLoaded", reinitNicheAcademy);
+})();
+
+// Clean up DOIs entered as URLs
+(function() {
+	const DOI_URL_PATTERN = /^https?:\/\/(dx\.)?doi\.org\/10\./i;
+
+	function stripToPath(value) {
+		const trimmed = value.trim();
+		if (!DOI_URL_PATTERN.test(trimmed)) {
+			return trimmed;
+		}
+		try {
+			const url = new URL(trimmed);
+			return url.pathname.replace(/^\//, '');
+		} catch {
+			return trimmed;
+		}
+	}
+
+	function applyStrip(input) {
+		const stripped = stripToPath(input.value);
+		if (stripped !== input.value) {
+			const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+				window.HTMLInputElement.prototype, 'value'
+			).set;
+			nativeInputValueSetter.call(input, stripped);
+			input.dispatchEvent(new Event('input', {
+				bubbles: true
+			}));
+		}
+	}
+
+	function attachDoiStripper(input) {
+		if (input.dataset.doiStripperAttached) return;
+		input.dataset.doiStripperAttached = 'true';
+
+		input.addEventListener('blur', () => applyStrip(input));
+		input.addEventListener('keydown', (e) => {
+			if (e.key === 'Enter') applyStrip(input);
+		});
+	}
+
+	function findAndAttach() {
+		// querySelectorAll catches every DOI field present in the DOM at once
+		document.querySelectorAll('[data-qa="citationLinker.doi"]').forEach(wrapper => {
+			const input = wrapper.querySelector('input[type="text"]');
+			if (input) attachDoiStripper(input);
+		});
+	}
+
+	const observer = new MutationObserver(() => findAndAttach());
+	observer.observe(document.body, {
+		childList: true,
+		subtree: true
+	});
+
+	findAndAttach();
 })();
