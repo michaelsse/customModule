@@ -1,3 +1,7 @@
+/* ================================== */
+/*   Function to add HTML Meta Tags   */
+/* ================================== */
+
 function addMetaTagOnce(attributes) {
 	// Check if a meta tag with the same name or property already exists
 	const nameAttr = attributes.name;
@@ -20,6 +24,10 @@ function addMetaTagOnce(attributes) {
 		document.head.appendChild(meta);
 	}
 }
+
+/* ================================== */
+/*   Function to add Header  Links    */
+/* ================================== */
 
 function addLinkOnce(attributes) {
 	// Check if a link tag with the same rel and sizes already exists
@@ -45,13 +53,16 @@ function addLinkOnce(attributes) {
 		document.head.appendChild(link);
 	}
 }
-
-// Helper to check if a script with given src already exists
+/* ============================================================= */
+/*   Helper to check if a script with given src already exists   */
+/* ============================================================= */
 function isScriptLoaded(url) {
 	return Array.from(document.scripts).some(script => script.src === url);
 }
 
-// Wrap everything in an immediately invoked function expression (IIFE)
+/* ======================================================================== */
+/*   Wrap everything in an immediately invoked function expression (IIFE)   */
+/* ======================================================================== */
 (function() {
 	// Configuration
 	const PRIMO_VIEW_CODE = "01COL_WTS-WTS_2026";
@@ -128,7 +139,8 @@ function isScriptLoaded(url) {
 	// Load External Javascripts
 	const almaHoursUrl = JS_BASE_PATH + "alma_hours_widget.js";
 	const discoveryShowcaseJsUrl = JS_BASE_PATH + "discovery-showcase.bundled.js";
-	const nicheAcademyUrl = "https://cdn.nicheacademy.com/na_loader/v1.0.0";
+	const nicheAcademyLoaderUrl = JS_BASE_PATH + "nicheAcademyLoader.min.js";
+	const primoDoiCleanupUrl = JS_BASE_PATH + "primoDoiCleanup.min.js";
 	const userwayUrl = "https://cdn.userway.org/widget.js";
 	const userwayAccount = "dDGBItJNUw"; // ← replace with your actual ID
 
@@ -169,142 +181,28 @@ function isScriptLoaded(url) {
 	} else {
 		console.log("Alma Hours Widget Script already loaded.");
 	}
-
-	// Load Niche Academy
-	if (!window.na) {
-		const queue = [];
-		const na = function() {
-			na.process ? na.process.apply(na, arguments) : queue.push(arguments);
-		};
-		na.queue = queue;
-		na.t = Date.now();
-		window.na = na;
-
-		if (!isScriptLoaded(nicheAcademyUrl)) {
-			const naScript = document.createElement("script");
-			naScript.src = nicheAcademyUrl;
-			naScript.async = true;
-			naScript.crossOrigin = "anonymous";
-			naScript.onload = () => console.log("Niche Academy loaded.");
-			naScript.onerror = () => console.error("Failed to load Niche Academy.");
-
-			const firstScript = document.getElementsByTagName("script")[0];
-			if (firstScript?.parentNode) {
-				firstScript.parentNode.insertBefore(naScript, firstScript);
-			} else {
-				document.head.appendChild(naScript); // Fallback
-			}
-		}
-
-		na("init", "d5f047c7591c4f6d395752f842804d10");
-		na("event", "pageload");
+	
+	// Load Primo DOI Cleanup Script
+	if (!isScriptLoaded(primoDoiCleanupUrl)) {
+		const primoDoiCleanupScript = document.createElement("script");
+		primoDoiCleanupScript.src = primoDoiCleanupUrl;
+		primoDoiCleanupScript.async = true;
+		primoDoiCleanupScript.onload = () => console.log("Primo DOI Cleanup Script loaded.");
+		primoDoiCleanupScript.onerror = () => console.error("Failed to load Primo DOI Cleanup Script.");
+		document.head.appendChild(primoDoiCleanupScript);
 	} else {
-		console.log("Niche Academy already loaded.");
+		console.log("Primo DOI Cleanup Script already loaded.");
 	}
 
-	// Niche Academy widgets on Full Item pages
-	// Listen for Angular router navigation completions
-	window.addEventListener("popstate", reinitNicheAcademy);
-
-	// Also hook Angular's router if accessible
-	// This covers programmatic navigation (router.navigate)
-	const _pushState = history.pushState;
-	history.pushState = function(...args) {
-		_pushState.apply(history, args);
-		reinitNicheAcademy();
-	};
-
-	const _replaceState = history.replaceState;
-	history.replaceState = function(...args) {
-		_replaceState.apply(history, args);
-		reinitNicheAcademy();
-	};
-
-	function reinitNicheAcademy() {
-		// Give Angular time to finish rendering the new view
-		setTimeout(() => {
-			const container = document.querySelector("#view-it-card-links");
-
-			if (!container) {
-				console.warn("Niche Academy: #view-it-card-links not found on this page.");
-				return;
-			}
-
-			// Disconnect previous observer before re-observing
-			if (window._naObserver) {
-				window._naObserver.disconnect();
-			}
-
-			const observer = new MutationObserver(() => {
-				window.dispatchEvent(new Event("na-widget-reload"));
-			});
-
-			observer.observe(container, {
-				childList: true
-			});
-			window._naObserver = observer; // Store reference for cleanup
-
-			window.dispatchEvent(new Event("na-widget-reload"));
-		}, 300); // Adjust delay if Angular needs more time to render
+	// Load Niche Academy Loader Script
+	if (!isScriptLoaded(nicheAcademyLoaderUrl)) {
+		const nicheAcademyLoaderScript = document.createElement("script");
+		nicheAcademyLoaderScript.src = nicheAcademyLoaderUrl;
+		nicheAcademyLoaderScript.async = true;
+		nicheAcademyLoaderScript.onload = () => console.log("Niche Academy Loader Script loaded.");
+		nicheAcademyLoaderScript.onerror = () => console.error("Failed to load Niche Academy Loader Script.");
+		document.head.appendChild(nicheAcademyLoaderScript);
+	} else {
+		console.log("Niche Academy Loader Script already loaded.");
 	}
-
-	// Run once on initial load
-	document.addEventListener("DOMContentLoaded", reinitNicheAcademy);
-})();
-
-// Clean up DOIs entered as URLs
-(function() {
-	const DOI_URL_PATTERN = /^https?:\/\/(dx\.)?doi\.org\/10\./i;
-
-	function stripToPath(value) {
-		const trimmed = value.trim();
-		if (!DOI_URL_PATTERN.test(trimmed)) {
-			return trimmed;
-		}
-		try {
-			const url = new URL(trimmed);
-			return url.pathname.replace(/^\//, '');
-		} catch {
-			return trimmed;
-		}
-	}
-
-	function applyStrip(input) {
-		const stripped = stripToPath(input.value);
-		if (stripped !== input.value) {
-			const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-				window.HTMLInputElement.prototype, 'value'
-			).set;
-			nativeInputValueSetter.call(input, stripped);
-			input.dispatchEvent(new Event('input', {
-				bubbles: true
-			}));
-		}
-	}
-
-	function attachDoiStripper(input) {
-		if (input.dataset.doiStripperAttached) return;
-		input.dataset.doiStripperAttached = 'true';
-
-		input.addEventListener('blur', () => applyStrip(input));
-		input.addEventListener('keydown', (e) => {
-			if (e.key === 'Enter') applyStrip(input);
-		});
-	}
-
-	function findAndAttach() {
-		// querySelectorAll catches every DOI field present in the DOM at once
-		document.querySelectorAll('[data-qa="citationLinker.doi"]').forEach(wrapper => {
-			const input = wrapper.querySelector('input[type="text"]');
-			if (input) attachDoiStripper(input);
-		});
-	}
-
-	const observer = new MutationObserver(() => findAndAttach());
-	observer.observe(document.body, {
-		childList: true,
-		subtree: true
-	});
-
-	findAndAttach();
 })();
