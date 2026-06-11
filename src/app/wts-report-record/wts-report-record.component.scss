@@ -9,6 +9,9 @@
 		padding-left: 1rem;
 		padding-right: 1rem;
 		margin-top: .25rem;
+		&:hover {
+			text-decoration: none;
+		}
 		.mdc-button__label {
 			font: var(--sys-body-medium);
 			letter-spacing: var(--sys-body-medium-tracking);
