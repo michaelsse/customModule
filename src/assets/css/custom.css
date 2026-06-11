@@ -25,10 +25,6 @@
 }
 
 body {
-	& ::selection {
-		background-color: #ffd24f;
-		color: #205392;
-	}
 	& .cdk-overlay-container {
 		& .cdk-global-overlay-wrapper:has(.mdc-snackbar) {
 			/* Move login snackbar to top for better discoverabilty and grouping with user avatar */
@@ -40,24 +36,6 @@ body {
 		& .mat-icon[data-mat-icon-name="Open-in-a-new-window"] {
 			& svg path {
 				fill: var(--sys-outline);
-			}
-		}
-		& nde-login-dialog {
-			& .authentication-method-btn {
-				& button[data-qa="SAML"] {
-					width: 100%;
-					background-color: var(--sys-surface-container-lowest);
-					& .authentication-method {
-						& span {
-							background: 0 center / contain no-repeat url("../images/loginPage/btn_google_light_normal_ios.svg")!important;
-							font: 500 1.1em "Roboto","Helvetica Neue",sans-serif!important;
-							height: 3.3rem;
-							display:flex;
-							align-items:center;
-							padding:0 0 0 3.6rem;
-						}
-					}
-				}
 			}
 		}
 	}
@@ -80,7 +58,7 @@ body {
 			& .custom-search-bar-container {
 				& .background-overlay {
 					/*Change overlay color*/
-					background-color: var(--sys-on-surface-variant)!important;
+					background-color: var(--sys-on-surface)!important;
 					opacity:.65!important;
 				}
 				& h2 {
@@ -91,18 +69,6 @@ body {
 					/*Shrink NDE Header Font-Size*/
 					font-size: 2rem!important;
 				}
-			}
-			& .filters-container, & .collection-discovery-gallery-container {
-				& .mat-mdc-button:not(:disabled) {
-					/*Add border to "filters" search button and "relevance" dropdown*/
-					/*border: 1px solid var(--sys-primary)!important;*/
-					border-radius: .5rem;
-				}
-			}
-			& .back-to-top-button {
-				/*Change background color of scrolling arrow*/
-				background-color: inherit;
-				bottom: 15vh;
 			}
 			& nde-full-display-details {
 				/*Highlight Course Reserves Info*/
@@ -120,7 +86,7 @@ body {
 			}
 			& nde-full-display-service-container, & nde-entity-related-docs-list {
 				& nde-view-it nde-view-it-section nde-view-it-card {
-					& .view-it-text-with-icon {
+					.view-it-text {
 						& .freeresource::before {
 							display: inline-block;
 							background-image: url('../images/OA_logo_green.svg');
@@ -133,7 +99,10 @@ body {
 							width: 16px;
 						}
 						a {
-							color: var(--sys-primary);
+							color: #006400;
+							mat-icon svg path {
+								fill: var(--sys-outline);
+							}
 						}
 					}
 					& button {
@@ -155,118 +124,6 @@ body {
 						}
 					}
 				}
-				& nde-carousel {
-					& .carousel-container {
-						& .carousel {
-							a.card-link {
-								&:focus {
-									border: inherit;
-									filter: brightness(80%);
-								}
-								&:hover {
-									filter: brightness(90%);
-								}
-								& nde-virtual-browse-card {
-									& .mdc-card {
-										&.carousel-card {
-											& .mat-mdc-card-image {
-												object-fit:contain;
-												filter: drop-shadow(1px 1px 2px var(--sys-CL-drop-shadow));
-											}
-										}
-									}
-								}
-							}
-							& .prev-button, & .next-button {
-								&:hover {
-									filter: brightness(110%);
-								}
-							}
-						}
-					}
-				}
-				& nde-full-display-links {
-					& .links-container > span {
-						align-items: flex-start;
-						display: flex;
-						flex-direction: column-reverse;
-						& .link-public-note {
-							font-size: .9em;
-							font-style: italic;
-						}
-						a {
-							& .mat-icon {
-								height: 1.1em;
-								margin-left: .1em;
-								& svg g path {
-									fill: var(--sys-outline);
-								}
-							}
-							&[href^='https://na04.alma.exlibrisgroup.com/bf/'] {
-								&:before {
-									content: '';
-									background-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAmCAMAAACxpjgOAAAAjVBMVEUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADqhzP4AAAAL3RSTlMABDeiqmGuhKa0sRKZB4xQGDppCp1YlExGLbeRZEkdgCYiILl3Pw17XUIyD3G+xv7PqScAAAKqSURBVDjLnZOJkqIwEIYDaUMOAoQbuZFL1Hn/x9so4zlrzbp/QYo+vnSlm6BUmR9JpUgFxkcKFDIN9JEM878RWVVd8DMceFUl3iDFjm5d9FKvnWwglEZ/R0obs1ekwoyHId3Vb84S2Ocqxg3S+IbBLESziDeIPCPP6lm+frxFdok003Lw1oBsO4s5Xds23r0ZwQvC65ydTpwWUrvRfOJAgTG+DYPv3bOyzJ4RABb2EyXbSWp7H1shYMdx8qNcEc8tS9d7RkitHW0O19b5O2dNfouQODinVpTkEv1EdGqSmMZzx2ZN6Kfn2HtFVh0Or01OVsRntHtG3o/SX5F6rWKckftk1/9QPiKGDfiyuQnkO7N4riIH1x3kAyJsAFuNhxRTNpzLjYG/dcYgCK5I5aapW92RiFIgjNghJ9sCXRwhBRqGIT1+I8JNElfckZmEdJqAcYhLdEEIXgX97S4MQ/t4FiGEgbplaeR106uM3y+y8Q8XWd4tLfSbpEbQZ9JAVFsfqY5QAZxzsopfl6vN1/fm06lQoA2mlBLGGACnnG35alwWSjk5B4HqVKalU/FGI0CJv1dpnEfYHVQEx/2gnKP2OEDmghC/dGgS5aVSewzwjbCsOZptf7CNxD/MaedH9tL4pgc2kpiZaI6R6NG8KR4QU8WJqj1b+E5zTBbH2i57PB9YZGbFaRD7QjSTOPY10BuiDplINHLomrFOxmYhSozSYl6UNifTzDLVTDLL0gdkcb8cWVS2iL+SLE1PwLKIjn2O2k5i081Q0fUe3zH6UCVoxTB59uh1Y7/fM8wy98sXi2Kk3aioHGtvMjyvysm1YxBblgM4p45lxTy2tUcv4FghgB3Htp3jHOuYdTs+wGVGQC5TpYRoz3k5+4BctMY4rEiIP1K4Qe7mQ7l/AEz7OnLX5P3tAAAAAElFTkSuQmCC");
-									background-repeat: no-repeat;
-									background-position: center center;
-									background-size: contain;
-									width: 1em;
-									height: 1em;
-									display: inline-block;
-									margin-right: .5em;
-								}
-							}
-							&[href^='https://openpolicyfinder.jisc.ac.uk'] {
-								&:before {
-									content: '';
-									background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240"><path fill="%237e7e7e" d="M0 0h240v240H0Z" style="stroke-width:.240113"/><path fill="%23fff" d="M73 133c0 19-11 29-27 29-12 0-20-6-26-13l10-10c4 6 9 10 16 10 8 0 13-5 13-16V80h14zm26 28H85V99h14zm-7-68a9 9 0 0 1 0-19 9 9 0 0 1 0 18zm63 50c0 12-10 19-22 19-9 0-19-3-26-9l6-10c7 5 14 8 20 8s9-3 9-7c0-5-6-6-13-9-9-2-19-6-19-18 0-11 9-19 21-19 8 0 16 3 23 7l-6 10c-6-3-12-5-17-5s-8 2-8 6 6 6 13 9c9 2 19 6 19 17zm38 19c-18 0-31-14-31-32 0-17 13-32 31-32 12 0 19 5 25 11l-9 9c-4-4-9-7-16-7-10 0-17 8-17 19s7 20 18 20c6 0 11-3 16-8l8 9c-6 6-13 11-25 11z" style="stroke-width:.240113"/></svg>');
-									background-repeat: no-repeat;
-									background-position: center center;
-									background-size: contain;
-									width: 1em;
-									height: 1em;
-									display: inline-block;
-									margin-right: .5em;
-								}
-							}
-							&[href^='https://www.alibris.com'] {
-								&:before {
-									content: '';
-									background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 64 64"><path d="M39 50.5h24.8V7.8H38.3s-4.1.5-6 4.1c0 0-2.1-3.7-6.2-4.1H0v42.5h25.3c1.1.2 1.1.2 1.8.4 1.4.5 2.5.9 2.8 2.7H0v2.8h64v-2.7H34.6c-.2 0-.6-2.8 4.4-3m-8.7-.3c-2.3-2.3-6.4-2.5-6.4-2.5H2.1V10.6h23.2c4.1.9 5 3.9 5 3.9zm3.2 0V14.5s.9-3 5-3.9h23.2v37H40.1c-.2.1-4.5.3-6.6 2.6" class="st0"/><path d="M7.6 15.1h19v2.1h-19zM7.6 20.2h19v2.1h-19zM7.6 26.1h19v2.1h-19zM7.6 31h19v2.1h-19zM7.6 36.7h19v2.1h-19zM7.6 42h19v2.1h-19zM38.1 15.1h18.4v2.1H38.1zM38.1 20.2h18.4v2.1H38.1zM38.1 26.1h18.4v2.1H38.1zM38.1 31h18.4v2.1H38.1zM38.1 36.7h18.4v2.1H38.1zM38.1 42h18.4v2.1H38.1z" class="st0"/></svg>');
-									background-repeat: no-repeat;
-									background-position: center center;
-									width: 1em;
-									height: 1em;
-									display: inline-block;
-									margin-right: .5em;
-								}
-							}
-							&[href^='https://www.amazon.com'] {
-								&:before {
-									content: '';
-									background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M304 325a164 164 0 0 1-29 25 135 135 0 0 1-66 19 99 99 0 0 1-58-20 97 97 0 0 1-27-100 112 112 0 0 1 65-69 368 368 0 0 1 105-16v-37a38 38 0 0 0-33-32 60 60 0 0 0-31 4 49 49 0 0 0-27 34 12 12 0 0 1-13 7l-51-4a11 11 0 0 1-8-10 104 104 0 0 1 36-64 144 144 0 0 1 91-30 146 146 0 0 1 84 28 87 87 0 0 1 31 70v129a84 84 0 0 0 8 31l16 23a13 13 0 0 1 0 12l-47 39a13 13 0 0 1-13 0 245 245 0 0 1-33-39zm-10-117a258 258 0 0 0-44 3 63 63 0 0 0-42 32 63 63 0 0 0 3 54 41 41 0 0 0 47 12 79 79 0 0 0 36-56v-45m93 180a168 168 0 0 1 49-2h1a10 10 0 0 1 7 12 205 205 0 0 1-15 46 3 3 0 0 0 2 4 3 3 0 0 0 2-1 83 83 0 0 0 31-64 12 12 0 0 0-10-13 96 96 0 0 0-69 14 3 3 0 0 0-1 4 3 3 0 0 0 3 0zm-339-9a301 301 0 0 0 153 96 263 263 0 0 0 160-18 226 226 0 0 0 66-47 6 6 0 0 0-2-8 12 12 0 0 0-8 0 402 402 0 0 1-116 39 358 358 0 0 1-127-9 447 447 0 0 1-119-60 5 5 0 0 0-7 7z"/></svg>');
-									background-repeat: no-repeat;
-									background-position: center center;
-									width: 1em;
-									height: 1em;
-									display: inline-block;
-									margin-right: .5em;
-								}
-							}
-							&[href^='https://westerntheolseminary.on.worldcat.org'] {
-								&:before {
-									content: '';
-									background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" viewBox="0 0 24 24"><path fill="%23231f20" fill-rule="evenodd" d="M12 15h2v2l-1 1c-4 4-8 2-10 1l-2-2-1-2a1 1 0 0 1 2 0s2 1 3 1c1 1 3 2 6 0l1-1m3-3a2 2 0 0 1 1-2l2 1 1 1c1 5-1 8-3 10l-3 2a1 1 0 0 1-2-1l1-2 2-2c1-1 3-2 2-6l-1-1m-1-4a1 1 0 0 1-2-1l1-2h2c5-1 7 3 8 5l1 3-1 2-2-1-1-3c-1-1-2-4-5-3h-1M9 8 8 9 7 8V6c1-5 5-6 7-6h4l1 2-2 1h-3c-1 0-4 0-4 4L9 8m-1 4 1 2-2 1-2-1c-4-2-3-6-3-9l1-3 2-1 1 2-1 3c0 2-1 4 2 6h1"/></svg>');
-									background-repeat: no-repeat;
-									background-position: center center;
-									width: 1em;
-									height: 1em;
-									display: inline-block;
-									margin-right: .5em;
-								}
-							}
-						}
-					}
-				}
 				& nde-locations-container {
 					& nde-location {
 						& .location-brief-properties-container {
@@ -279,19 +136,6 @@ body {
 								color: #943d56;
 							}
 						}
-					}
-				}
-				& nde-requests {
-					& .notification-container {
-						border: 1px inset var(--sys-secondary);
-						background-color: var(--sys-surface-container-highest);
-						border-radius: .5rem;
-					}
-					& .no-requests {
-						border: 1px outset var(--sys-on-error-container);
-						border-radius: .312rem;
-						color: var(--sys-on-error-container);
-						font-weight: var(--sys-body-medium-weight);
 					}
 				}
 			}
@@ -510,15 +354,16 @@ body {
 					& .filters-side-bar-content {
 						visibility: visible;
 					}
-					& nde-record-indications {
-						& .record-indication-cont {
-							& .display-inline {
-								padding: .25em .4em;
+					& nde-record-indications, nde-search-result-journal-indication-line {
+						& .record-indication-cont, & .journal-line-cont {
+							vertical-align: middle;
+							& div.display-inline, & .journal-line-text {
+								/*padding: .25em .4em;
 								border-radius: .25rem;
 								border: 1px solid var(--sys-outline-variant);
 								& span.record-indication {
 									color: #3c3f43;
-								}
+								}*/
 							}
 							& .mat-icon {
 								height: 1rem;
@@ -536,6 +381,7 @@ body {
 							}
 							& .mat-divider.mat-divider-vertical {
 								height: inherit;
+								vertical-align: middle;
 							}
 						}
 					}
@@ -595,11 +441,6 @@ body {
 					--mdc-text-button-label-text-color: #204d6a
 				}
 				& nde-user-area, & nde-main-menu {
-					/*.mdc-button__label {
-						& span {
-							font-weight: var(--sys-body-medium-weight);
-						}
-					}*/
 					& mat-icon {
 						& svg g path {
 							fill: var(--sys-secondary)!important;
@@ -643,8 +484,14 @@ body {
 		/*Change background color of Form Fields*/
 		background-color: var(--sys-on-primary)!important;
 	}
-	& nde-language-selector-presenter mat-select svg path {
-		fill: var(--sys-on-primary)!important;
+	& nde-language-selector-presenter mat-select {
+		svg path {
+			fill: var(--sys-on-primary)!important;
+		}
+		/* Remove Gap after Language Select Trigger */
+		.lang-drop-down .mat-mdc-select-trigger {
+			gap:unset!important;
+		}
 	}
 	& nde-login-page {
 		header {
@@ -688,19 +535,6 @@ body {
 			}
 		}
 	}
-	& nde-source-record {
-		background-color: var(--sys-background);
-		font-size: 12px;
-		& h1 {
-			font: var(--sys-headline-large);
-		}
-		pre {
-			line-height: 1.2rem;
-		}
-	}
-	#allFilterToggleButton {
-		margin-left: 2px;
-	}
 }
 
 @media (min-width: 1000px) {
@@ -724,20 +558,6 @@ body {
 			margin: 0 auto;
 			logo a {
 				margin: 0 auto;
-			}
-		}
-	}
-}
-
-@media (max-width: 799.98px) {
-	.filters-container {
-		& #allFilterToggleButton {
-			& .mat-icon {
-				margin-left: unset;
-				margin-right: unset;
-			}
-			& .mdc-button__label {
-				display: none;
 			}
 		}
 	}
