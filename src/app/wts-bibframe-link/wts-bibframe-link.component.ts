@@ -1,61 +1,49 @@
-import {
-	Component,
-	Input,
-	OnChanges,
-	OnDestroy
-} from '@angular/core';
-import {
-	Meta
-} from '@angular/platform-browser';
+import { Component, Input, DoCheck, OnDestroy } from '@angular/core';
 
 @Component({
-	selector: 'custom-wts-bibframe-link',
-	standalone: true,
-	imports: [],
-	template: ''
+  selector: 'custom-wts-bibframe-link',
+  standalone: true,
+  imports: [],
+  template: ''
 })
-export class WtsBibframeLinkComponent implements OnChanges, OnDestroy {
-	@Input() hostComponent!: any;
+export class WtsBibframeLinkComponent implements DoCheck, OnDestroy {
+  @Input() hostComponent!: any;
 
-	private bibframeElement: HTMLElement | null = null;
-	private rdaElement: HTMLElement | null = null;
+  private currentMmsId: string | null | undefined = undefined;
 
-	constructor(private meta: Meta) {}
+  ngDoCheck(): void {
+    const pnx = this.hostComponent?.searchResult?.pnx;
+    const mmsId = pnx?.display?.mms?.[0] ?? null;
+    const isAlma = pnx?.control?.sourceid === 'alma';
+    const effectiveId = isAlma ? mmsId : null;
 
-	ngOnChanges(): void {
-		this.removeLinks();
-		const pnx = this.hostComponent?.searchResult?.pnx;
-		const mmsId = pnx?.display?.mms?.[0];
-		const instCode = '01COL_WTS';
+    if (effectiveId === this.currentMmsId) return;
 
-		if (!instCode || !mmsId || pnx?.control?.sourceid !== 'alma') return;
+    this.currentMmsId = effectiveId;
+    this.removeLinks();
 
-		const baseUrl = `https://open-na.hosted.exlibrisgroup.com/alma/${instCode}`;
-		this.bibframeElement = this.meta.addTag({
-			rel: 'alternate',
-			type: 'application/rdf+xml',
-			profile: 'https://id.loc.gov/ontologies/bibframe/',
-			href: `${baseUrl}/bf/entity/instance/${mmsId}`
-		});
-		this.rdaElement = this.meta.addTag({
-			rel: 'alternate',
-			type: 'application/rdf+xml',
-			profile: 'https://rdaregistry.info/Elements/',
-			href: `${baseUrl}/rda/entity/manifestation/${mmsId}`
-		});
+    if (!effectiveId) return;
 
-		console.log('bibframeElement:', this.bibframeElement);
-		console.log('rdaElement:', this.rdaElement);
-	}
+    const baseUrl = 'https://open-na.hosted.exlibrisgroup.com/alma/01COL_WTS';
+    this.createLink(`${baseUrl}/bf/entity/instance/${effectiveId}`, 'http://id.loc.gov/ontologies/bibframe/');
+    this.createLink(`${baseUrl}/rda/entity/manifestation/${effectiveId}`, 'http://rdaregistry.info/Elements/');
+  }
 
-	ngOnDestroy(): void {
-		this.removeLinks();
-	}
+  ngOnDestroy(): void {
+    this.removeLinks();
+  }
 
-	private removeLinks(): void {
-		this.bibframeElement?.remove();
-		this.rdaElement?.remove();
-		this.bibframeElement = null;
-		this.rdaElement = null;
-	}
+  private createLink(href: string, profile: string): void {
+    const el = document.createElement('link');
+    el.setAttribute('rel', 'alternate');
+    el.setAttribute('type', 'application/rdf+xml');
+    el.setAttribute('profile', profile);
+    el.setAttribute('href', href);
+    el.setAttribute('data-wts-bibframe', 'true');
+    document.head.appendChild(el);
+  }
+
+  private removeLinks(): void {
+    document.querySelectorAll('link[data-wts-bibframe="true"]').forEach(el => el.remove());
+  }
 }
