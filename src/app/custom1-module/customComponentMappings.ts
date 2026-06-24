@@ -1,5 +1,6 @@
 import { ExternalSearchComponent } from '../external-search/external-search.component';
 import { HathiTrustComponent } from '../hathi-trust/hathi-trust.component';
+import { WtsBibframeLinkComponent } from '../wts-bibframe-link/wts-bibframe-link.component';
 import { WtsCustomLibraryResourcesComponent } from '../wts-custom-library-resources/wts-custom-library-resources.component';
 import { WtsNdeHeaderComponent } from '../wts-nde-header/wts-nde-header.component';
 import { WtsNdeFooterComponent } from '../wts-nde-footer/wts-nde-footer.component';
@@ -14,7 +15,8 @@ import { WtsZoteroInCitationComponent } from '../wts-zotero-in-citation/wts-zote
 export const selectorComponentMap = new Map<string, any>([
 	['nde-search-bar-filters-before',ExternalSearchComponent],
 	['nde-online-availability-before', HathiTrustComponent],
-	['nde-user-panel-after',WtsCustomLibraryResourcesComponent],
+	['nde-full-display-details-top', WtsBibframeLinkComponent],
+	['nde-user-panel-bottom',WtsCustomLibraryResourcesComponent],
 	['nde-header-top', WtsNdeHeaderComponent],
 	['nde-footer-top', WtsNdeFooterComponent],
 	['nde-full-display-details-after',WtsOffensiveMaterialsStatementComponent],
