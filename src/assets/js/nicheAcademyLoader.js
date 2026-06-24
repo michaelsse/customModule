@@ -34,22 +34,30 @@
 	}
 
 	// Niche Academy widgets on Full Item pages
-	// Listen for Angular router navigation completions
-	window.addEventListener("popstate", reinitNicheAcademy);
+	// Primo VE DOM watcher
+	let naDebounce;
+	
+	const pageObserver = new MutationObserver(() => {
+		clearTimeout(naDebounce);
+		
+		naDebounce = setTimeout(() => {
+			const container =
+            document.querySelector("#view-it-card-links");
+			
+			if (container) {
+				console.log(
+                "Primo change detected, reloading Niche Academy"
+			);
+			
+            reinitNicheAcademy();
+		}
+	}, 750);
+});
 
-	// Also hook Angular's router if accessible
-	// This covers programmatic navigation (router.navigate)
-	const _pushState = history.pushState;
-	history.pushState = function(...args) {
-		_pushState.apply(history, args);
-		reinitNicheAcademy();
-	};
-
-	const _replaceState = history.replaceState;
-	history.replaceState = function(...args) {
-		_replaceState.apply(history, args);
-		reinitNicheAcademy();
-	};
+pageObserver.observe(document.body, {
+    childList: true,
+    subtree: true
+});
 
 	function reinitNicheAcademy() {
 		// Give Angular time to finish rendering the new view
@@ -116,3 +124,4 @@
 	  attributeFilter: ['style', 'class']
 	});
 }
+
